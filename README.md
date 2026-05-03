@@ -5,6 +5,7 @@ A multi-agent drone intercept simulation built with PX4 SITL, Gazebo, and MAVSDK
 ---
 
 ## Demo
+
 Click to watch
 
 [![Counter UAV Demo](https://img.youtube.com/vi/hm-dU5wbCms/0.jpg)](https://www.youtube.com/watch?v=hm-dU5wbCms)
@@ -36,11 +37,25 @@ The simulation runs two concurrent asyncio coroutines coordinated by an `asyncio
 ## Prerequisites
 
 ### System Requirements
+
 - macOS (Apple Silicon tested)
 - Python 3.10+
 - Conda (Miniconda recommended)
 - PX4-Autopilot (built for SITL)
 - Gazebo `gz-sim8`
+
+### Install the PX4_Autopilot Submodule
+
+```bash
+cd counter_uav
+git submodule update --init --recursive
+```
+
+#### or download manually from here
+
+```bash
+git clone --recursive https://github.com/PX4/PX4-Autopilot.git
+```
 
 ### Setup Python Environement
 
@@ -48,6 +63,7 @@ The simulation runs two concurrent asyncio coroutines coordinated by an `asyncio
 conda create -n Counter-UAV python=3.10
 conda activate Counter-UAV
 ```
+
 Install requirements:
 
 ```bash
@@ -166,6 +182,7 @@ The EKF hasn't fully converged. The `arm_with_retry()` function handles this aut
 
 **`Address already in use`**  
 A previous crashed run left MAVSDK or PX4 processes alive. Run:
+
 ```bash
 pkill -9 -f px4; pkill -9 -f gz; pkill -9 -f ruby; pkill -9 -f mavsdk
 ```
@@ -194,4 +211,5 @@ A headless Gazebo server from a previous run survived. Kill all processes and re
 - [ ] HUD overlay with target lock indicator
 
 ## Author
+
 Sieam Shahriare
