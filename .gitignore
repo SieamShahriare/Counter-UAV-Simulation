@@ -1,0 +1,59 @@
+# PX4-Autopilot (entire submodule or cloned directory)
+PX4-Autopilot/
+PX4-Autopilot
+**/PX4-Autopilot/
+
+# PX4 build outputs
+build/
+*.px4
+*.elf
+*.bin
+*.map
+*.o
+*.d
+*.cmake
+Makefile
+CMakeCache.txt
+CMakeFiles/
+
+# PX4 specific
+*.msg
+*.srv
+*.action
+__pycache__/
+*.py[cod]
+*.so
+*.log
+*.ulg
+*.bson
+*.dbl
+*.dll
+*.exe
+
+# Logs and data
+logs/
+*.log
+*.ulg
+site_summary.json
+parameters_*.bson
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Your existing rules
+# Python
+__pycache__/
+*.pyc
+.env
+
+# Logs
+logs/
+
+# Misc
+*.ulg
+
+*._

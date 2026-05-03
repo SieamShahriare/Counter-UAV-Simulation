@@ -1,0 +1,30 @@
+cd PX4-Autopilot
+
+export GZ_IP=127.0.0.1
+export GZ_PARTITION=counter_uav
+export HEADLESS=1
+export PX4_GZ_WORLD_X=100
+export PX4_GZ_WORLD_Y=0
+
+PX4_SYS_AUTOSTART=4001 PX4_GZ_MODEL=x500 ./build/px4_sitl_default/bin/px4 -i 0
+
+___
+
+
+cd PX4-Autopilot
+
+export GZ_IP=127.0.0.1
+export GZ_PARTITION=counter_uav
+export HEADLESS=1
+export PX4_GZ_WORLD_X=0
+export PX4_GZ_WORLD_Y=0
+
+PX4_SYS_AUTOSTART=4001 PX4_GZ_MODEL=x500_depth ./build/px4_sitl_default/bin/px4 -i 1
+
+___
+
+
+export GZ_IP=127.0.0.1
+export GZ_PARTITION=counter_uav
+
+gz sim -g -v 4
