@@ -6,7 +6,7 @@ from mavsdk.offboard import OffboardError, VelocityNedYaw, PositionNedYaw, Veloc
 from mavsdk.action import ActionError
 
 async def wait_until_ready(drone, label):
-    """Waits for the drone to connect and for all preflight checks to pass."""
+    # Waits for the drone to connect and for all preflight checks to pass
     print(f"[{label}] Waiting for connection...")
     async for state in drone.core.connection_state():
         if state.is_connected:
@@ -21,7 +21,7 @@ async def wait_until_ready(drone, label):
         await asyncio.sleep(1)
 
 async def arm_with_retry(drone, label, retries=5):
-    """Attempts to arm the drone, retrying if the commander temporarily denies it."""
+    # Attempts to arm the drone, retrying if the commander temporarily denies it
     for attempt in range(1, retries + 1):
         try:
             await drone.action.arm()
@@ -36,7 +36,7 @@ async def arm_with_retry(drone, label, retries=5):
             await asyncio.sleep(2)
 
 async def get_position(drone):
-    """Helper to fetch the latest position data."""
+    # Helper to fetch the latest position data
     async for pos in drone.telemetry.position():
         return pos
 
@@ -48,7 +48,6 @@ async def run_enemy(enemy, airborne_event):
     await enemy.action.takeoff()
     await asyncio.sleep(8)  # Wait to reach safe altitude
 
-    # Signal the Defender that the Enemy is in the air!
     print("[Enemy] Airborne. Signaling Defender...")
     airborne_event.set()
 
@@ -61,7 +60,7 @@ async def run_enemy(enemy, airborne_event):
         print(f"[Enemy] Offboard failed: {e}")
         return
 
-    # Random Evasive Maneuver Loop (runs for roughly 45 seconds)
+    # Random Evasive Maneuver Loop
     for _ in range(15):
         # Pick a random speed between 3 m/s and 10 m/s
         rand_speed = random.uniform(3.0, 10.0)
@@ -70,7 +69,7 @@ async def run_enemy(enemy, airborne_event):
         
         await enemy.offboard.set_velocity_body(VelocityBodyYawspeed(rand_speed, 0.0, 0.0, rand_yaw))
         
-        # Hold this random vector for 3 seconds before juking again
+        # Hold this random position for 3 seconds
         await asyncio.sleep(3)
 
     print("[Enemy] Mission complete. Attempting to land...")
@@ -78,7 +77,6 @@ async def run_enemy(enemy, airborne_event):
         await enemy.offboard.stop()
         await enemy.action.land()
     except Exception as e:
-        # If the Defender did its job, the Enemy is already dead.
         print(f"[Enemy] Cannot land. Aircraft destroyed: {e}")
 
 async def run_defender(defender, enemy, airborne_event):
@@ -92,7 +90,7 @@ async def run_defender(defender, enemy, airborne_event):
     print("[Defender] Target airborne! Scrambling...")
     await arm_with_retry(defender, "Defender")
     await defender.action.takeoff()
-    await asyncio.sleep(8)  # Wait to reach safe altitude
+    await asyncio.sleep(8)
 
     # Start offboard with a 0 velocity setpoint
     await defender.offboard.set_velocity_ned(VelocityNedYaw(0, 0, 0, 0))
@@ -120,10 +118,10 @@ async def run_defender(defender, enemy, airborne_event):
 
         # Kinetic Strike Radius
         if distance < 1:
-            print("[Defender] *** KINETIC IMPACT !!! ***")
+            print("[Defender] *** KINETIC IMPACT ***")
             break
 
-        # Proportional velocity control (High Speed for impact)
+        # Proportional velocity control
         speed = 15.0
         scale = speed / max(distance, 0.1)
         vn = dn * scale
